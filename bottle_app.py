@@ -5,30 +5,24 @@
 ### The landing page for assignment 3 should be at /
 #####################################################################
 
-from bottle import route, run, default_app, debug
+from bottle import Bottle, debug,route,default_app,run,request,template,static_file,TEMPLATE_PATH
+from hashlib import sha256
 
-def htmlify(title,text):
-    page = """
-        <!doctype html>
-        <html lang="en">
-            <head>
-                <meta charset="utf-8" />
-                <title>%s</title>
-            </head>
-            <body>
-            %s
-            </body>
-        </html>
+TEMPLATE_PATH.insert(0,'./page')
 
-    """ % (title,text)
-    return page
+@route('/static/<filename:path>')
+def css(filename):
+    return static_file(filename, root='static/')
+
+app= Bottle()
+
+
+#for pages
 
 def index():
-    return htmlify("My lovely website",
-                   "This is going to be an awesome website, when it is finished.")
+    return template('index')
 
-route('/', 'GET', index)
-
+route('/','GET',hello)
 #####################################################################
 ### Don't alter the below code.
 ### It allows this website to be hosted on Heroku
